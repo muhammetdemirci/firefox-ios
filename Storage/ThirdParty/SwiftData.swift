@@ -81,7 +81,7 @@ public class SwiftData {
     }
 
     private func getSharedConnection() -> ConcreteSQLiteDBConnection? {
-        var connection: ConcreteSQLiteDBConnection?
+        weak var connection: ConcreteSQLiteDBConnection?
 
         dispatch_sync(sharedConnectionQueue) {
             if self.closed {
@@ -104,7 +104,7 @@ public class SwiftData {
      * close a database connection and run a block of code inside it.
      */
     func withConnection(flags: SwiftData.Flags, synchronous: Bool=true, cb: (db: SQLiteDBConnection) -> NSError?) -> NSError? {
-        let conn: ConcreteSQLiteDBConnection?
+        weak var conn: ConcreteSQLiteDBConnection?
 
         if SwiftData.ReuseConnections {
             conn = getSharedConnection()
